@@ -25,7 +25,7 @@ class Tunnel {
   }
 
   redirectRequestIfAny() {
-    if (this.queuedRequests.length) {
+    if (this.pendingResponseToProxy && this.queuedRequests.length) {
       let req = this.queuedRequests.shift();
       this.pendingResponseToProxy.json(req.data);
       this.pendingResponseToProxy = null;
