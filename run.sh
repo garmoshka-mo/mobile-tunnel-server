@@ -1,0 +1,1 @@
+node-inspector & nodemon --debug ./server.js
