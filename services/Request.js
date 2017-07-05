@@ -11,13 +11,14 @@ exports.Request = class {
       url: req.url,
       headers: req.headers
     };
-    this.res = res;
+    this.responseToBrowser = res;
 
     tunnel.addRequest(this);
   }
 
   respond(data) {
-    this.res.send(data);
+    this.responseToBrowser.set(data.headers);
+    this.responseToBrowser.send( new Buffer(data.body) );
   }
 
 };
