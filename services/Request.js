@@ -17,14 +17,9 @@ exports.Request = class {
   }
 
   respond(data) {
-    //this.responseToBrowser.set(data.headers);
-    //this.responseToBrowser.set('Content-Type', 'image/jpeg');
-
-    //console.log('DATA', data);
-    //this.responseToBrowser.send( new Buffer(data.body) );
-    //this.responseToBrowser.send( new Buffer(data) );
     if (data.code)
       this.responseToBrowser.status( data.code );
+    this.responseToBrowser.set( JSON.parse(data.headers) );
     this.responseToBrowser.send( data.body );
   }
 

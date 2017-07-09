@@ -81,12 +81,15 @@ function makeLocalRequest(method, url, callback) {
     callback(form);
   }
 
+  let headers;
   function processResponse(response) {
+    headers = response.headers;
     return response.buffer();
   }
 
   function processBuffer(buffer) {
     var form = new FormData();
+    form.append('headers', parseHeaders());
     form.append('data', buffer, {
       filename: 'unicycle.jpg',
       contentType: 'image/jpeg'
@@ -94,13 +97,13 @@ function makeLocalRequest(method, url, callback) {
     callback(form);
   }
 
-  function getHeaders(response) {
-    // overcomplicated conversion, because in nodejs response.headers has amended letters case
-    var headers = {};
-    for (var i = 0; i < response.rawHeaders.length; i+=2) {
-      headers[response.rawHeaders[i]] = response.rawHeaders[i+1];
-    }
-    return headers;
+  function parseHeaders() {
+    // тут немжноко по дэбильному текст написан, потому что формат headers у node-fetch сложный
+    var result = {};
+    Object.keys(headers.raw()).forEach((key) => {
+      result[key] = headers.get(key);
+    });
+    return JSON.stringify(result);
   }
 
 }
