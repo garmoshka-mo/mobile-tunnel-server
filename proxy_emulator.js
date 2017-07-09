@@ -1,9 +1,9 @@
 var request = require('request');
 
 const CONFIG = {
-  serverOrigin: 'http://zaloop.tk:3000',
+  //serverOrigin: 'http://zaloop.tk:3000',
   localServiceOrigin: 'http://localhost:8888',
-  //serverOrigin: 'http://localhost:3000',
+  serverOrigin: 'http://localhost:3000',
   //localServiceOrigin: 'http://192.168.1.254:8080',
   deviceId: 'test-emulator-id',
   serverRequestTimeout: 30,
@@ -23,7 +23,10 @@ function makeRequest(id, form) {
       'X-Request-ID': id,
       'Device-ID': CONFIG.deviceId
     };
-    options.form = form;
+    //options.form = form;
+    //options.body = form.body;
+    //options.encoding = 'binary';
+    options.formData = form;
   }
 
   if (!id)
@@ -39,7 +42,7 @@ function makeRequest(id, form) {
   function processResult(error, response, body) {
     if (error) {
 
-      // console.log() logic not required in JAVA:
+      // console logic not required in JAVA:
       if (['ECONNRESET', 'ECONNREFUSED', 'ESOCKETTIMEDOUT'].includes(error.code))
         console.log(error.code);
       else
@@ -75,15 +78,21 @@ function makeRequest(id, form) {
 
     function processResult(error, response, body) {
       let result;
-      if (error) {
-        result = {body: error.code};
-      } else {
 
+      var fs = require('fs');
+
+      if (error)
+        result = {error: error.code};
+      else
         result = {
-          headers: getHeaders(response),
-          body: error ? error.code : body
+          test: 'i love you',
+          //headers: getHeaders(response),
+          //data: new Buffer(body.toString('binary'),'binary')
+          //data: body
+          //data: s
+          data: fs.createReadStream(__dirname + '/notbad.jpg')
         };
-      }
+
       callback(result);
     }
 
