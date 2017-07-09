@@ -11,7 +11,7 @@ router.post('/tunnel/handle-request', upload.single('data'),
   function(req, res, next) {
     var id = req.headers['x-request-id'];
     if (id) {
-      let response = {headers: req.body.headers};
+      let response = req.body;
 
       response.body = req.file ? req.file.buffer : req.body.data;
       if (!response.body) {

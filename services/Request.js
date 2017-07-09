@@ -17,10 +17,13 @@ exports.Request = class {
   }
 
   respond(data) {
-    if (data.code)
-      this.responseToBrowser.status( data.code );
-    this.responseToBrowser.set( JSON.parse(data.headers) );
-    this.responseToBrowser.send( data.body );
+    if (data.status == 200) {
+      this.responseToBrowser.set( JSON.parse(data.headers) );
+      this.responseToBrowser.send( data.body );
+    } else {
+      this.responseToBrowser.status( parseInt(data.status) );
+      this.responseToBrowser.send( data.body.toString() );
+    }
   }
 
 };

@@ -2,10 +2,10 @@ let fetch = require('node-fetch');
 var FormData = require('form-data');
 
 const CONFIG = {
-  //serverOrigin: 'http://zaloop.tk:3000',
-  localServiceOrigin: 'http://localhost:8888',
-  serverOrigin: 'http://localhost:3000',
-  //localServiceOrigin: 'http://192.168.1.254:8080',
+  //localServiceOrigin: 'http://localhost:8888',
+  //serverOrigin: 'http://localhost:3000',
+  serverOrigin: 'http://zaloop.tk:3000',
+  localServiceOrigin: 'http://192.168.1.254:8080',
   deviceId: 'test-emulator-id',
   serverRequestTimeout: 30,
   localRequestTimeout: 60
@@ -81,14 +81,16 @@ function makeLocalRequest(method, url, callback) {
     callback(form);
   }
 
-  let headers;
+  let status, headers;
   function processResponse(response) {
+    status = response.status;
     headers = response.headers;
     return response.buffer();
   }
 
   function processBuffer(buffer) {
     var form = new FormData();
+    form.append('status', status);
     form.append('headers', parseHeaders());
     form.append('data', buffer, {
       filename: 'unicycle.jpg',
