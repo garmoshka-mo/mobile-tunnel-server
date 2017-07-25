@@ -39,15 +39,14 @@ function makeRemoteRequest(id, form) {
     .catch(processConnectionError);
 
   function processConnectionError(error) {
-    console.error(error.code || error.type || error);
+    console.error('Error on /tunnel/handle-request:', error.code || error.type || error);
     // If any error occurred, retry after 3 seconds:
     setTimeout(makeRemoteRequest, 3000);
   }
 
   function processResponse(response) {
     if (response.status != 200) {
-      console.error(response.status, response.statusText);
-      setTimeout(makeRemoteRequest, 3000);
+      throw `${response.status} ${response.statusText}`;
     } else
       // parse body as json:
       return response.json();

@@ -1,7 +1,7 @@
 const uuidv1 = require('uuid/v1');
 var { tunnel } = require('./tunnel.js');
 
-exports.Request = class {
+exports.BrowserRequest = class {
 
   constructor(req, res) {
     this.id = uuidv1();

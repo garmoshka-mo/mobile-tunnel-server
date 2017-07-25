@@ -11,7 +11,7 @@ class Tunnel {
     this.redirectRequestIfAny();
   }
 
-  respondToRequest(id, response) {
+  respondToBrowserRequest(id, response) {
     let request = this.requestsMap[id];
     if (request) {
       delete this.requestsMap[id];
