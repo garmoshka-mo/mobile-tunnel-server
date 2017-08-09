@@ -53,6 +53,7 @@ function makeRemoteRequest(id, form) {
   }
 
   function processJsonBody(body) {
+
     makeLocalRequest(body.method, body.url, (form) => {
       makeRemoteRequest(body.id, form);
     });
@@ -76,7 +77,7 @@ function makeLocalRequest(method, url, callback) {
 
   function processConnectionError(error) {
     var form = new FormData();
-    form.append('error', JSON.stringify(error.code || error.type || error));
+    form.append('error', error.code || error.type || JSON.stringify(error));
     callback(form);
   }
 
@@ -92,8 +93,7 @@ function makeLocalRequest(method, url, callback) {
     form.append('status', status);
     form.append('headers', parseHeaders());
     form.append('data', buffer, {
-      filename: 'unicycle.jpg',
-      contentType: 'image/jpeg'
+      filename: 'unicycle.jpg'
     });
     callback(form);
   }
